@@ -39,7 +39,7 @@ const App = () => {
           }
         ]}
       >
-        <Text style={styles.fadingText}>Fading View!</Text>
+        <Text style={styles.fadingText}>Animated Text</Text>
       </Animated.View>
       <View style={styles.buttonRow}>
         <Button title="Fade In View" onPress={fadeIn} />
