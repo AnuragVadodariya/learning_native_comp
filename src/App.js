@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableHighlight, StyleSheet, Text } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 
 function MyComponent(props) {
   return (
@@ -13,13 +13,12 @@ const App = () => {
   return (
     <View style={styles.container}>
       <View style={styles.button}>
-        <TouchableHighlight
-          activeOpacity={0.6}
+        <TouchableOpacity
           underlayColor="#DDDDDD"
           onPress={() => alert("Pressed!")}
         >
           <MyComponent />
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     </View>
   );
