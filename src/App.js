@@ -1,53 +1,44 @@
 import React, { useRef } from "react";
-import {
-  Animated,
-  Text,
-  View,
-  StyleSheet,
-  Button,
-  SafeAreaView
-} from "react-native";
+import { Animated, View, StyleSheet, PanResponder, Text } from "react-native";
 
 const App = () => {
-  // fadeAnim will be used as the value for opacity. Initial Value: 0
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const pan = useRef(new Animated.ValueXY()).current;
 
-  const fadeIn = () => {
-    // Will change fadeAnim value to 1 in 5 seconds
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 4000
-    }).start();
-  };
-
-  const fadeOut = () => {
-    // Will change fadeAnim value to 0 in 3 seconds
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: 3000
-    }).start();
-  };
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        pan.setOffset({
+          x: pan.x._value,
+          y: pan.y._value
+        });
+      },
+      onPanResponderMove: Animated.event(
+        [
+          null,
+          { dx: pan.x, dy: pan.y }
+        ]
+      ),
+      onPanResponderRelease: () => {
+        pan.flattenOffset();
+      }
+    })
+  ).current;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <Text style={styles.titleText}>Drag this box!</Text>
       <Animated.View
-        style={[
-          styles.fadingContainer,
-          {
-            // Bind opacity to animated value
-            opacity: fadeAnim
-          }
-        ]}
+        style={{
+          transform: [{ translateX: pan.x }, { translateY: pan.y }]
+        }}
+        {...panResponder.panHandlers}
       >
-        <Text style={styles.fadingText}>Animated Text</Text>
+        <View style={styles.box} />
       </Animated.View>
-      <View style={styles.buttonRow}>
-        <Button title="Fade In View" onPress={fadeIn} />
-        <Button title="Fade Out View" onPress={fadeOut} />
-      </View>
-    </SafeAreaView>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -55,17 +46,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  fadingContainer: {
-    padding: 20,
-    backgroundColor: "powderblue"
+  titleText: {
+    fontSize: 14,
+    lineHeight: 24,
+    fontWeight: "bold"
   },
-  fadingText: {
-    fontSize: 28
-  },
-  buttonRow: {
-    flexBasis: 100,
-    justifyContent: "space-evenly",
-    marginVertical: 16
+  box: {
+    height: 150,
+    width: 150,
+    backgroundColor: "blue",
+    borderRadius: 5
   }
 });
 
