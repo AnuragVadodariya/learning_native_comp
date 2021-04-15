@@ -1,19 +1,26 @@
-import React, { useState } from "react";
-import { View, Switch, StyleSheet } from "react-native";
+import React from "react";
+import { View, TouchableHighlight, StyleSheet, Text } from "react-native";
+
+function MyComponent(props) {
+  return (
+    <View {...props} style={{ flex: 1 }}>
+      <Text>My Component</Text>
+    </View>
+  );
+}
 
 const App = () => {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
-
   return (
     <View style={styles.container}>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-      />
+      <View style={styles.button}>
+        <TouchableHighlight
+          activeOpacity={0.6}
+          underlayColor="#DDDDDD"
+          onPress={() => alert("Pressed!")}
+        >
+          <MyComponent />
+        </TouchableHighlight>
+      </View>
     </View>
   );
 };
@@ -23,6 +30,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center"
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    padding: 10
   }
 });
 
