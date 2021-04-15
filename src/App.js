@@ -1,56 +1,82 @@
-import React from "react";
-import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 
 const App = () => {
-  const onPress = () => {
-    alert("press btn");
-  };
+  const [modalVisible, setModalVisible] = useState(false);
   return (
-    <View style={styles.app}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          accessible={true}
-          accessibilityHint="Navigates to the previous screen"
-          accessibilityLabel="Tap me!"
-          onPress={onPress}
-        >
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Press me!</Text>
+    <View style={styles.centeredView}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Hello World!</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </Pressable>
           </View>
-        </TouchableOpacity>
-      </View>
+        </View>
+      </Modal>
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.textStyle}>Show Modal</Text>
+      </Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  app: {
-    marginHorizontal: "auto",
-    maxWidth: 500
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
   },
-  logo: {
-    height: 80
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
   },
-  header: {
-    padding: 20
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
   },
-  title: {
+  buttonOpen: {
+    backgroundColor: "#F194FF"
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3"
+  },
+  textStyle: {
+    color: "white",
     fontWeight: "bold",
-    fontSize: "1.5rem",
-    marginVertical: "1em",
     textAlign: "center"
   },
-  text: {
-    lineHeight: "1.5em",
-    fontSize: "1.125rem",
-    marginVertical: "1em",
+  modalText: {
+    marginBottom: 15,
     textAlign: "center"
-  },
-  link: {
-    color: "#1B95E0"
-  },
-  code: {
-    fontFamily: "monospace, monospace"
   }
 });
 
